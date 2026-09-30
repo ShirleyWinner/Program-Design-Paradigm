@@ -31,4 +31,20 @@ public abstract class IndividualMember extends CoOpMember {
                 communityDonations
         );
     }
+
+    /**
+     * Calculates individual dues using a 70% reserve and health fund deduction.
+     * An assessable revenue of exactly $55,000 uses the higher rate (19%).
+     *
+     * @return the dues amount
+     */
+    @Override
+    public Double calculateDues() {
+        double reserveAndHealthDeduction =
+                (getCooperativeReserveFundContributions()
+                        + getMemberHealthFundContributions()) * 0.7;
+        double assessableRevenue = calculateAssessableRevenue(reserveAndHealthDeduction);
+        double rate = assessableRevenue < 55000.0 ? 0.15 : 0.19;
+        return assessableRevenue * rate;
+    }
 }

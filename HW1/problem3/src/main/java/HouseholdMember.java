@@ -61,4 +61,24 @@ public abstract class HouseholdMember extends CoOpMember {
     public Double getDependentCareExpenses() {
         return dependentCareExpenses;
     }
+
+    /**
+     * Calculates household dues with the capped fund and childcare deductions.
+     * An assessable revenue of exactly $90,000 uses the higher rate (18.5%).
+     *
+     * @return the dues amount
+     */
+    @Override
+    public Double calculateDues() {
+        double reserveAndHealthDeduction = Math.min(17500.0,
+                (getCooperativeReserveFundContributions()
+                        + getMemberHealthFundContributions()) * 0.65);
+        double assessableRevenue = calculateAssessableRevenue(reserveAndHealthDeduction);
+
+        if (getLastYearFarmRevenue() < 200000.0 && childcareExpenses > 5000.0) {
+            assessableRevenue -= 1250.0;
+        }
+        double rate = assessableRevenue < 90000.0 ? 0.145 : 0.185;
+        return assessableRevenue * rate;
+    }
 }

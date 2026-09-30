@@ -95,4 +95,30 @@ public abstract class CoOpMember {
     public Double getCommunityDonations() {
         return communityDonations;
     }
+
+    /**
+     * Calculates this member's dues after the applicable deductions.
+     *
+     * @return the dues amount
+     */
+    public abstract Double calculateDues();
+
+    /**
+     * Applies the deductions shared by individual and household members.
+     * Only the reserve and health fund deduction is explicitly floored at zero
+     * by the specification; subsequent deductions are subtracted as stated.
+     *
+     * @param reserveAndHealthDeduction the deduction for this membership type
+     * @return assessable revenue after the shared deductions
+     */
+    protected double calculateAssessableRevenue(double reserveAndHealthDeduction) {
+        double assessableRevenue = Math.max(0.0,
+                lastYearFarmRevenue - totalDuesPaid - reserveAndHealthDeduction);
+
+        if (lastYearFarmRevenue < 250000.0
+                && equipmentLoanInterestPaid + landTaxesPaid > 12500.0) {
+            assessableRevenue -= 2500.0;
+        }
+        return assessableRevenue;
+    }
 }

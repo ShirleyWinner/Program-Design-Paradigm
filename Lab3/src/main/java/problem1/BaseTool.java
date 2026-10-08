@@ -9,9 +9,6 @@ public abstract class BaseTool implements Tool {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Tool name must not be null or blank.");
     }
-    if (description == null || description.isBlank()) {
-      throw new IllegalArgumentException("Tool description must not be null or blank.");
-    }
     this.name = name;
     this.description = description;
   }
@@ -31,7 +28,6 @@ public abstract class BaseTool implements Tool {
     if (input == null) {
       throw new IllegalArgumentException("Input must not be null.");
     }
-
     String result = execute(input);
     callCount++;
     return result;

@@ -7,9 +7,10 @@ public class WordCountTool extends BaseTool {
 
   @Override
   protected String execute(String input) {
-    if (input.trim().isEmpty()) {
+    String trimmedInput = input.trim();
+    if (trimmedInput.isEmpty()) {
       return "0";
     }
-    return Integer.toString(input.trim().split("\\s+").length);
+    return Integer.toString(trimmedInput.split("\\s+").length);
   }
 }

@@ -57,4 +57,29 @@ public abstract class Product {
     public int getAge() {
         return minimumPurchaseAge;
     }
+
+    /** Compares product type and shared product attributes.
+     * @param object object to compare
+     * @return whether the product attributes are equal
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        Product otherProduct = (Product) object;
+        return Objects.equals(manufacturer, otherProduct.manufacturer)
+                && Objects.equals(name, otherProduct.name)
+                && Double.compare(price, otherProduct.price) == 0
+                && minimumPurchaseAge == otherProduct.minimumPurchaseAge;
+    }
+
+    /** @return hash derived from the attributes used by equals */
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass(), manufacturer, name, price, minimumPurchaseAge);
+    }
 }

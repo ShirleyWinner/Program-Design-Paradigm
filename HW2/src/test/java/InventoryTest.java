@@ -1,8 +1,16 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /** Tests Inventory. */
 class InventoryTest {
+    /** Clears shared static stock so each test starts independently. */
+    @BeforeEach
+    void resetStock() {
+        Inventory.groceryStock.clear();
+        Inventory.householdStock.clear();
+    }
+
     /** Checks all grocery subtypes, household classification and changing value.
      * @throws InsufficientStockException if a valid purchase unexpectedly fails
      */

@@ -4,10 +4,10 @@ import java.util.Objects;
 
 /** Grocery and household stock entries maintained in separate lists. */
 public class Inventory {
-    private final List<StockItem> groceryStock = new ArrayList<>();
-    private final List<StockItem> householdStock = new ArrayList<>();
+    public static final List<StockItem> groceryStock = new ArrayList<>();
+    public static final List<StockItem> householdStock = new ArrayList<>();
 
-    /** Creates an empty inventory. */
+    /** Creates an inventory view; stock lists are shared by all instances. */
     public Inventory() {
     }
 
@@ -30,12 +30,12 @@ public class Inventory {
         }
     }
 
-    /** @return unmodifiable snapshot of grocery entries */
+    /** @return unmodifiable snapshot of shared grocery entries */
     public List<StockItem> getGroceryStock() {
         return List.copyOf(groceryStock);
     }
 
-    /** @return unmodifiable snapshot of household entries */
+    /** @return unmodifiable snapshot of shared household entries */
     public List<StockItem> getHouseholdStock() {
         return List.copyOf(householdStock);
     }

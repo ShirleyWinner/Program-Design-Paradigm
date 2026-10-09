@@ -1,0 +1,65 @@
+@startuml
+class Customer {
+ - name : String
+ - age : int
+ - cart : ShoppingCart
+ + processOrder(inventory : Inventory) : Receipt
+}
+class ShoppingCart {
+ - products : List<Product>
+ - promotionService : PromotionService
+ + addProduct(inventory : Inventory, product : Product) : void
+ + addProduct(inventory : Inventory, product : Product, quantity : int) : void
+ + calculateTotal() : double
+ + processOrder(inventory : Inventory, customerAge : int) : Receipt
+}
+interface PromotionService {
+ + getDiscountPercentage(product : Product) : double
+}
+class Receipt {
+ - totalPricePaid : double
+ - receivedProducts : List<Product>
+ - unavailableProducts : List<Product>
+ - ageRestrictedProducts : List<Product>
+ + getTotalPricePaid() : double
+ + getReceivedProducts() : List<Product>
+ + getUnavailableProducts() : List<Product>
+ + getAgeRestrictedProducts() : List<Product>
+}
+abstract class Product
+interface Substitutable {
+ + isAcceptableSubstituteFor(original : Product) : boolean
+}
+class Grocery
+class Household
+class Salmon
+class Cheese
+class Beer
+class Inventory
+class StockItem
+class Exception
+class RuntimeException
+class InsufficientStockException
+class InvalidQuantityException
+Customer "1" *-- "1" ShoppingCart
+ShoppingCart "1" o-- "0..*" Product
+ShoppingCart --> PromotionService
+ShoppingCart ..> Inventory
+ShoppingCart ..> Substitutable : checks candidates
+ShoppingCart ..> Receipt : creates
+Receipt o-- Product : summary lists
+Inventory o-- StockItem
+StockItem o-- Product
+Product <|-- Grocery
+Product <|-- Household
+Grocery <|-- Salmon
+Grocery <|-- Cheese
+Grocery <|-- Beer
+Substitutable <|.. Grocery
+Substitutable <|.. Household
+Exception <|-- InsufficientStockException
+Exception <|-- RuntimeException
+RuntimeException <|-- InvalidQuantityException
+ShoppingCart ..> InsufficientStockException : adding items
+ShoppingCart ..> InvalidQuantityException : invalid quantity
+@enduml

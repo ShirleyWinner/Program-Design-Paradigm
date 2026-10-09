@@ -33,14 +33,36 @@ public class Household extends Product implements Substitutable {
         return units;
     }
 
-    /** Evaluates a candidate against the original.
-     * The Problem 2 Part C specification is needed to implement this policy.
+    /** Checks type, price and package unit count against the original.
      * @param original product to replace
-     * @return whether substitution is allowed
-     * @throws UnsupportedOperationException until the substitution policy is supplied
+     * @return whether this candidate satisfies the product substitution rules
      */
     @Override
     public boolean isAcceptableSubstituteFor(Product original) {
-        throw new UnsupportedOperationException("Problem 2 Part C substitution rules are required");
+        if (original == null || getClass() != original.getClass()) {
+            return false;
+        }
+        Household originalHousehold = (Household) original;
+        return getPrice() <= originalHousehold.getPrice()
+                && getUnits() >= originalHousehold.getUnits();
+    }
+
+    /** Compares shared attributes and package unit count.
+     * @param object object to compare
+     * @return whether both products have equal attributes
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (!super.equals(object)) {
+            return false;
+        }
+        Household otherProduct = (Household) object;
+        return units == otherProduct.units;
+    }
+
+    /** @return hash derived from the attributes used by equals */
+    @Override
+    public int hashCode() {
+        return 31 * super.hashCode() + Integer.hashCode(units);
     }
 }

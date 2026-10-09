@@ -1,0 +1,54 @@
+@startuml
+abstract class Product {
+ - manufacturer : String
+ - name : String
+ - price : double
+ - minimumPurchaseAge : int
+ + getManufacturer() : String
+ + getName() : String
+ + getPrice() : double
+ + getAge() : int
+}
+interface Substitutable {
+ + isAcceptableSubstituteFor(original : Product) : boolean
+}
+class Grocery {
+ - ounces : double
+ + getOunces() : double
+}
+class Household {
+ - units : int
+ + getUnits() : int
+}
+class Salmon
+class Cheese
+class Beer
+class StockItem {
+ - product : Product
+ - quantity : int
+ + hasEnoughStock(requestedQuantity : int) : boolean
+ + purchase(requestedQuantity : int) : void
+}
+class Inventory {
+ - groceryStock : List<StockItem>
+ - householdStock : List<StockItem>
+ + addStockItem(stockItem : StockItem) : void
+ + getTotalRetailValue() : double
+}
+class Exception
+class InsufficientStockException
+Product <|-- Grocery
+Product <|-- Household
+Grocery <|-- Salmon
+Grocery <|-- Cheese
+Grocery <|-- Beer
+Substitutable <|.. Grocery
+Substitutable <|.. Household
+StockItem "0..*" o-- "1" Product
+Inventory "1" o-- "0..*" StockItem : groceryStock
+Inventory "1" o-- "0..*" StockItem : householdStock
+Exception <|-- InsufficientStockException
+StockItem ..> InsufficientStockException : throws
+note right of Beer : Minimum purchase age defaults to 21
+note right of Substitutable : Policy pending Problem 2 Part C specification
+@enduml

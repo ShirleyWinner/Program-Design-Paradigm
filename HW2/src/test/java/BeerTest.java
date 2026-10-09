@@ -1,0 +1,19 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+/** Tests Beer. */
+class BeerTest {
+    /** Checks inherited data and package amount. */
+    @Test void storesData() {
+        Beer product = new Beer("maker", "name", 3.5, 12);
+        assertEquals("maker", product.getManufacturer());
+        assertEquals("name", product.getName());
+        assertEquals(3.5, product.getPrice());
+        assertEquals(21, product.getAge());
+        assertEquals(12, product.getOunces());
+    }
+    /** Rejects negative package amounts. */
+    @Test void rejectsNegativeAmount() {
+        assertThrows(IllegalArgumentException.class, () -> new Beer("m", "n", 1, -1));
+    }
+}

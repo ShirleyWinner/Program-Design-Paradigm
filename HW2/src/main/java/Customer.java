@@ -59,10 +59,9 @@ public class Customer {
     }
 
     /** Processes this customer's cart using their recorded age.
-     * @param inventory current store inventory
      * @return receipt for the completed order
      */
-    public Receipt processOrder(Inventory inventory) {
-        return cart.processOrder(inventory, age);
+    public Receipt processOrder() {
+        return cart.processOrder(age);
     }
 }

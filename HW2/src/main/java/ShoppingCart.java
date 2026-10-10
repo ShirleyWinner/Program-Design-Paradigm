@@ -110,20 +110,18 @@ public class ShoppingCart {
 
     /** Resolves substitutions, checks age, purchases eligible units and empties the cart.
      * Unavailable and age-restricted products are recorded as normal receipt outcomes.
-     * @param inventory current store inventory
      * @param customerAge nonnegative age of the customer
      * @return receipt containing purchased and removed products
      * @throws IllegalArgumentException if age or a promotional discount is invalid
      */
-    public Receipt processOrder(Inventory inventory, int customerAge) {
-        Objects.requireNonNull(inventory, "inventory");
+    public Receipt processOrder(int customerAge) {
         if (customerAge < 0) {
             throw new IllegalArgumentException("Customer age cannot be negative");
         }
 
         List<StockItem> allStock = new ArrayList<>();
-        allStock.addAll(inventory.getGroceryStock());
-        allStock.addAll(inventory.getHouseholdStock());
+        allStock.addAll(Inventory.groceryStock);
+        allStock.addAll(Inventory.householdStock);
 
         // 1. Find an original product or an acceptable substitute for each cart unit.
         List<StockItem> selectedStock = new ArrayList<>();
@@ -138,7 +136,9 @@ public class ShoppingCart {
         }
         // 2. Remove age-restricted products and price only the products being purchased.
         List<Product> receivedProducts = new ArrayList<>();
+        // Track the products that cannot be purchased due to age restrictions.
         List<Product> ageRestrictedProducts = new ArrayList<>();
+        // Track the stock items that will be purchased to deduct them later.
         List<StockItem> purchasedStock = new ArrayList<>();
         double totalPricePaid = 0;
         for (StockItem stockItem : selectedStock) {
@@ -179,6 +179,7 @@ public class ShoppingCart {
      */
     private StockItem findStockFor(Product original, List<StockItem> allStock,
                                   List<StockItem> selectedStock) {
+        //find the original product in stock first, then look for an acceptable substitute if the original is unavailable
         for (StockItem stockItem : allStock) {
             if (stockItem.getProduct().equals(original)
                     && hasUnallocatedStock(stockItem, selectedStock)) {
@@ -186,6 +187,7 @@ public class ShoppingCart {
             }
         }
 
+        // If the original product is unavailable, look for an acceptable substitute
         for (StockItem stockItem : allStock) {
             if (!hasUnallocatedStock(stockItem, selectedStock)) {
                 continue;
@@ -207,6 +209,8 @@ public class ShoppingCart {
      * @param selectedStock entries already allocated, one entry per unit
      * @return whether another unit can be allocated
      */
+    // Stock is deducted only after the order is resolved.
+    // Count units already selected so the same stock cannot be allocated twice.
     private boolean hasUnallocatedStock(StockItem stockItem, List<StockItem> selectedStock) {
         int allocatedQuantity = 0;
         for (StockItem selectedItem : selectedStock) {

@@ -32,7 +32,7 @@ class OrderReceiptTest {
         customer.addProductToCart(inventory, beer);
         originalStock.purchase(2);
         unavailableStock.purchase(1);
-        Receipt receipt = customer.processOrder(inventory);
+        Receipt receipt = customer.processOrder();
         assertEquals(3, receipt.getTotalPricePaid());
         assertEquals(1, receipt.getReceivedProducts().size());
         assertEquals(replacement, receipt.getReceivedProducts().get(0));
@@ -43,7 +43,7 @@ class OrderReceiptTest {
         assertEquals(1, beerStock.getQuantity());
         assertEquals(0, replacementStock.getQuantity());
         assertTrue(customer.getCart().getProducts().isEmpty());
-        Receipt emptyReceipt = customer.processOrder(inventory);
+        Receipt emptyReceipt = customer.processOrder();
         assertEquals(0, emptyReceipt.getTotalPricePaid());
         assertTrue(emptyReceipt.getReceivedProducts().isEmpty());
         assertEquals(1, beerStock.getQuantity());
@@ -61,14 +61,14 @@ class OrderReceiptTest {
         Customer young = new Customer("Young", 20, new ShoppingCartTest.PromotionStub(null, 0));
         young.addProductToCart(inventory, original);
         originalStock.purchase(1);
-        Receipt rejected = young.processOrder(inventory);
+        Receipt rejected = young.processOrder();
         assertEquals(replacement, rejected.getAgeRestrictedProducts().get(0));
         assertTrue(rejected.getReceivedProducts().isEmpty());
         assertEquals(1, replacementStock.getQuantity());
         assertTrue(young.getCart().getProducts().isEmpty());
         Customer adult = new Customer("Adult", 21, new ShoppingCartTest.PromotionStub(null, 0));
         adult.addProductToCart(inventory, replacement);
-        Receipt accepted = adult.processOrder(inventory);
+        Receipt accepted = adult.processOrder();
         assertEquals(4, accepted.getTotalPricePaid());
         assertTrue(accepted.getAgeRestrictedProducts().isEmpty());
         assertEquals(0, replacementStock.getQuantity());

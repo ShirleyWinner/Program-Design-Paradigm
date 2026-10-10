@@ -45,7 +45,7 @@ public class Grocery extends Product implements Substitutable {
         }
         Grocery originalGrocery = (Grocery) original;
         return getPrice() <= originalGrocery.getPrice()
-                && getOunces() >= originalGrocery.getOunces();
+                && getOunces() >= originalGrocery.getOunces() && originalGrocery.getOunces() > 0;
     }
 
     /** Searches the shared grocery inventory and replaces one original unit in the cart.
@@ -69,9 +69,6 @@ public class Grocery extends Product implements Substitutable {
                 continue;
             }
             if (!candidate.isAcceptableSubstituteFor(original)) {
-                continue;
-            }
-            if (stockItem.getQuantity() <= 0) {
                 continue;
             }
             if (cart.replaceOneProduct(original, candidate, stockItem.getQuantity())) {

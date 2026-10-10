@@ -30,7 +30,7 @@ class OrderPickupTest {
         ShoppingCart cart = new ShoppingCart(new ShoppingCartTest.PromotionStub(null, 0));
         cart.addProduct(inventory, original, 4);
         originalStock.purchase(3);
-        Receipt receipt = cart.processOrder(inventory, 30);
+        Receipt receipt = cart.processOrder(30);
         assertEquals(3, receipt.getReceivedProducts().size());
         assertEquals(original, receipt.getReceivedProducts().get(0));
         assertEquals(candidate, receipt.getReceivedProducts().get(1));
@@ -60,7 +60,7 @@ class OrderPickupTest {
         ShoppingCart cart = new ShoppingCart(new ShoppingCartTest.PromotionStub(null, 0));
         cart.addProduct(inventory, original, 3);
         originalStock.purchase(3);
-        Receipt receipt = cart.processOrder(inventory, 30);
+        Receipt receipt = cart.processOrder(30);
         assertEquals(1, receipt.getReceivedProducts().size());
         assertEquals(candidate, receipt.getReceivedProducts().get(0));
         assertEquals(0, candidateStock.getQuantity());
@@ -70,14 +70,14 @@ class OrderPickupTest {
     @Test void availableOriginal() throws InsufficientStockException {
         Inventory inventory = new Inventory();
         ShoppingCart cart = new ShoppingCart(new ShoppingCartTest.PromotionStub(null, 0));
-        cart.processOrder(inventory, 30);
+        cart.processOrder(30);
         Product original = new Salmon("A", "salmon", 5, 12);
         StockItem stock = new StockItem(original, 1);
         StockItem cheaper = new StockItem(new Salmon("B", "salmon", 4, 14), 1);
         inventory.addStockItem(stock);
         inventory.addStockItem(cheaper);
         cart.addProduct(inventory, original);
-        Receipt receipt = cart.processOrder(inventory, 30);
+        Receipt receipt = cart.processOrder(30);
         assertEquals(original, receipt.getReceivedProducts().get(0));
         assertEquals(0, stock.getQuantity());
         assertEquals(1, cheaper.getQuantity());

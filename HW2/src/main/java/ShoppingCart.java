@@ -124,52 +124,24 @@ public class ShoppingCart {
         List<StockItem> allStock = new ArrayList<>();
         allStock.addAll(inventory.getGroceryStock());
         allStock.addAll(inventory.getHouseholdStock());
-        int[] remainingQuantities = new int[allStock.size()];
-        for (int index = 0; index < allStock.size(); index++) {
-            remainingQuantities[index] = allStock.get(index).getQuantity();
-        }
 
-        List<StockItem> resolvedStock = new ArrayList<>();
+        // 1. Find an original product or an acceptable substitute for each cart unit.
+        List<StockItem> selectedStock = new ArrayList<>();
         List<Product> unavailableProducts = new ArrayList<>();
         for (Product original : products) {
-            int selectedIndex = -1;
-            for (int index = 0; index < allStock.size(); index++) {
-                Product candidate = allStock.get(index).getProduct();
-                if (remainingQuantities[index] > 0 && candidate.equals(original)) {
-                    selectedIndex = index;
-                    break;
-                }
-            }
-            if (selectedIndex == -1) {
-                for (int index = 0; index < allStock.size(); index++) {
-                    if (remainingQuantities[index] <= 0) {
-                        continue;
-                    }
-                    Product candidate = allStock.get(index).getProduct();
-                    if (!(candidate instanceof Substitutable)) {
-                        continue;
-                    }
-                    Substitutable substitute = (Substitutable) candidate;
-                    if (substitute.isAcceptableSubstituteFor(original)) {
-                        selectedIndex = index;
-                        break;
-                    }
-                }
-            }
-            if (selectedIndex == -1) {
+            StockItem selectedItem = findStockFor(original, allStock, selectedStock);
+            if (selectedItem == null) {
                 unavailableProducts.add(original);
             } else {
-                resolvedStock.add(allStock.get(selectedIndex));
-                // Reserve locally so one available unit cannot resolve multiple cart entries.
-                remainingQuantities[selectedIndex]--;
+                selectedStock.add(selectedItem);
             }
         }
-
+        // 2. Remove age-restricted products and price only the products being purchased.
         List<Product> receivedProducts = new ArrayList<>();
         List<Product> ageRestrictedProducts = new ArrayList<>();
         List<StockItem> purchasedStock = new ArrayList<>();
         double totalPricePaid = 0;
-        for (StockItem stockItem : resolvedStock) {
+        for (StockItem stockItem : selectedStock) {
             Product product = stockItem.getProduct();
             if (customerAge < product.getAge()) {
                 ageRestrictedProducts.add(product);
@@ -184,11 +156,12 @@ public class ShoppingCart {
             purchasedStock.add(stockItem);
         }
 
+        // 3. Deduct purchased units, create the receipt and empty the cart.
         for (StockItem stockItem : purchasedStock) {
             try {
                 stockItem.purchase(1);
             } catch (InsufficientStockException exception) {
-                // In this single-threaded model the locally reserved quantity is still available.
+                // Stock was checked above; a failure here means inventory changed unexpectedly.
                 throw new IllegalStateException("Inventory changed during order processing", exception);
             }
         }
@@ -196,6 +169,53 @@ public class ShoppingCart {
                 unavailableProducts, ageRestrictedProducts);
         products.clear();
         return receipt;
+    }
+
+    /** Finds available original stock first, then an acceptable substitute.
+     * @param original requested product
+     * @param allStock current inventory entries
+     * @param selectedStock entries already allocated, one entry per unit
+     * @return matching stock entry, or null when neither option is available
+     */
+    private StockItem findStockFor(Product original, List<StockItem> allStock,
+                                  List<StockItem> selectedStock) {
+        for (StockItem stockItem : allStock) {
+            if (stockItem.getProduct().equals(original)
+                    && hasUnallocatedStock(stockItem, selectedStock)) {
+                return stockItem;
+            }
+        }
+
+        for (StockItem stockItem : allStock) {
+            if (!hasUnallocatedStock(stockItem, selectedStock)) {
+                continue;
+            }
+            Product candidate = stockItem.getProduct();
+            if (!(candidate instanceof Substitutable)) {
+                continue;
+            }
+            Substitutable substitute = (Substitutable) candidate;
+            if (substitute.isAcceptableSubstituteFor(original)) {
+                return stockItem;
+            }
+        }
+        return null;
+    }
+
+    /** Checks whether this stock entry still has an unallocated unit.
+     * @param stockItem inventory entry to check
+     * @param selectedStock entries already allocated, one entry per unit
+     * @return whether another unit can be allocated
+     */
+    private boolean hasUnallocatedStock(StockItem stockItem, List<StockItem> selectedStock) {
+        int allocatedQuantity = 0;
+        for (StockItem selectedItem : selectedStock) {
+            // Compare stock entry identity, rather than the attributes of its product.
+            if (selectedItem == stockItem) {
+                allocatedQuantity++;
+            }
+        }
+        return allocatedQuantity < stockItem.getQuantity();
     }
 
     /** @return unmodifiable snapshot containing one product entry per unit */

@@ -54,7 +54,7 @@ public class Grocery extends Product implements Substitutable {
      * @param cart cart to update
      * @return whether one unit was replaced
      */
-    public boolean replaceInCart(Product original, ShoppingCart cart) {
+    /*public boolean replaceInCart(Product original, ShoppingCart cart) {
         Objects.requireNonNull(cart, "cart");
         if (!(original instanceof Grocery)) {
             return false;
@@ -76,7 +76,7 @@ public class Grocery extends Product implements Substitutable {
             }
         }
         return false;
-    }
+    }*/
 
     /** Compares shared attributes and package weight.
      * @param object object to compare

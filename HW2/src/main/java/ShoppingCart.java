@@ -90,6 +90,7 @@ public class ShoppingCart {
             return false;
         }
 
+        // Find the first occurrence of the original product in the cart and count how many substitutes are already present.
         int originalIndex = -1;
         int substituteQuantityInCart = 0;
         for (int index = 0; index < products.size(); index++) {

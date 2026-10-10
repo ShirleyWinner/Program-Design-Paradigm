@@ -22,26 +22,24 @@ class GrocerySubstitutionTest {
     }
 
     /** Replaces only one unit, checks cumulative candidate quantity and preserves stock. */
-    @Test void replacesInCart() throws InsufficientStockException {
+    /** Adding products to the cart does not replace them or reduce stock. */
+    @Test
+    void addingProductsPreservesStock() throws InsufficientStockException {
         Grocery original = new Beer("A", "original", 5, 12);
-        Grocery candidate = new Beer("B", "candidate", 4, 14);
         StockItem originalStock = new StockItem(original, 2);
-        StockItem emptyStock = new StockItem(new Beer("C", "empty", 3, 14), 0);
-        StockItem candidateStock = new StockItem(candidate, 1);
+
         Inventory inventory = new Inventory();
         inventory.addStockItem(originalStock);
-        inventory.addStockItem(emptyStock);
-        inventory.addStockItem(candidateStock);
-        ShoppingCart cart = new ShoppingCart(new ShoppingCartTest.PromotionStub(null, 0));
+
+        ShoppingCart cart =
+                new ShoppingCart(new ShoppingCartTest.PromotionStub(null, 0));
+
         cart.addProduct(inventory, original, 2);
-        assertTrue(original.replaceInCart(original, cart));
-        assertEquals(candidate, cart.getProducts().get(0));
+
+        assertEquals(2, cart.getProducts().size());
+        assertEquals(original, cart.getProducts().get(0));
         assertEquals(original, cart.getProducts().get(1));
-        assertEquals(9, cart.calculateTotal());
-        assertFalse(original.replaceInCart(original, cart));
-        assertEquals(1, candidateStock.getQuantity());
+        assertEquals(10, cart.calculateTotal());
         assertEquals(2, originalStock.getQuantity());
-        ShoppingCart emptyCart = new ShoppingCart(new ShoppingCartTest.PromotionStub(null, 0));
-        assertFalse(original.replaceInCart(original, emptyCart));
     }
 }

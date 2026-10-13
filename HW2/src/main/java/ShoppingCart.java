@@ -42,14 +42,14 @@ public class ShoppingCart {
 
         // Find the stock entry for the product in either grocery or household stock.
         StockItem matchingStock = null;
-        for (StockItem stockItem : inventory.groceryStock) {
+        for (StockItem stockItem : Inventory.groceryStock) {
             if (stockItem.getProduct().equals(product)) {
                 matchingStock = stockItem;
                 break;
             }
         }
         if (matchingStock == null) {
-            for (StockItem stockItem : inventory.householdStock) {
+            for (StockItem stockItem : Inventory.householdStock) {
                 if (stockItem.getProduct().equals(product)) {
                     matchingStock = stockItem;
                     break;
@@ -60,6 +60,7 @@ public class ShoppingCart {
             throw new InsufficientStockException("Product is not stocked");
         }
 
+        //check the number of the same products that exist in the cart
         int quantityAlreadyInCart = 0;
         for (Product cartProduct : products) {
             if (cartProduct.equals(product)) {
@@ -72,42 +73,12 @@ public class ShoppingCart {
             throw new InsufficientStockException("Not enough stock for this product");
         }
 
+        //once pass all the conditions, a product can be added into the cart
         for (int itemNumber = 0; itemNumber < quantity; itemNumber++) {
             products.add(product);
         }
     }
 
-    /** Replaces one unit if the candidate stock can cover the resulting cart quantity.
-     * @param original product to replace
-     * @param substitute replacement product
-     * @param availableQuantity candidate's current stock quantity
-     * @return whether one unit was replaced
-     */
-    public boolean replaceOneProduct(Product original, Product substitute, int availableQuantity) {
-        Objects.requireNonNull(original, "original");
-        Objects.requireNonNull(substitute, "substitute");
-        if (substitute.equals(original) || availableQuantity <= 0) {
-            return false;
-        }
-
-        // Find the first occurrence of the original product in the cart and count how many substitutes are already present.
-        int originalIndex = -1;
-        int substituteQuantityInCart = 0;
-        for (int index = 0; index < products.size(); index++) {
-            Product product = products.get(index);
-            if (originalIndex == -1 && product.equals(original)) {
-                originalIndex = index;
-            }
-            if (product.equals(substitute)) {
-                substituteQuantityInCart++;
-            }
-        }
-        if (originalIndex == -1 || substituteQuantityInCart >= availableQuantity) {
-            return false;
-        }
-        products.set(originalIndex, substitute);
-        return true;
-    }
 
     /** Resolves substitutions, checks age, purchases eligible units and empties the cart.
      * Unavailable and age-restricted products are recorded as normal receipt outcomes.
@@ -135,6 +106,7 @@ public class ShoppingCart {
                 selectedStock.add(selectedItem);
             }
         }
+
         // 2. Remove age-restricted products and price only the products being purchased.
         List<Product> receivedProducts = new ArrayList<>();
         // Track the products that cannot be purchased due to age restrictions.

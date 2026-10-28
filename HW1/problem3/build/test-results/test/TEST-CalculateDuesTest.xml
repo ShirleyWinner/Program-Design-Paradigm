@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CalculateDuesTest" tests="31" skipped="0" failures="0" errors="0" timestamp="2026-09-30T00:49:46.212Z" hostname="Roxannes-macbook.local" time="0.342">
+  <properties/>
+  <testcase name="[1] &quot;0&quot;, &quot;0&quot;" classname="CalculateDuesTest" time="0.065"/>
+  <testcase name="[2] &quot;89999&quot;, &quot;13049.855&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[3] &quot;90000&quot;, &quot;16650&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[4] &quot;90001&quot;, &quot;16650.185&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="individualFundDeductionHasNoHouseholdCap()" classname="CalculateDuesTest" time="0.002"/>
+  <testcase name="individualCombinesFundsAndPaidDuesBeforeSelectingRate()" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="equipmentEligibilityDoesNotUseRevenueAfterDeductions()" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[1] &quot;199999&quot;, &quot;5001&quot;, &quot;36768.565&quot;" classname="CalculateDuesTest" time="0.004"/>
+  <testcase name="[2] &quot;200000&quot;, &quot;5001&quot;, &quot;37000&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[3] &quot;200001&quot;, &quot;5001&quot;, &quot;37000.185&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[4] &quot;100000&quot;, &quot;4999&quot;, &quot;18500&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[5] &quot;100000&quot;, &quot;5000&quot;, &quot;18500&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[6] &quot;100000&quot;, &quot;5001&quot;, &quot;18268.75&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[1] &quot;249999&quot;, &quot;7000&quot;, &quot;5501&quot;, &quot;47024.81&quot;" classname="CalculateDuesTest" time="0.005"/>
+  <testcase name="[2] &quot;250000&quot;, &quot;7000&quot;, &quot;5501&quot;, &quot;47500&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[3] &quot;250001&quot;, &quot;7000&quot;, &quot;5501&quot;, &quot;47500.19&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[4] &quot;100000&quot;, &quot;7000&quot;, &quot;5499&quot;, &quot;19000&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[5] &quot;100000&quot;, &quot;7000&quot;, &quot;5500&quot;, &quot;19000&quot;" classname="CalculateDuesTest" time="0.002"/>
+  <testcase name="[6] &quot;100000&quot;, &quot;7000&quot;, &quot;5501&quot;, &quot;18525&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[1] &quot;joint&quot;" classname="CalculateDuesTest" time="0.004"/>
+  <testcase name="[2] &quot;separate&quot;" classname="CalculateDuesTest" time="0.002"/>
+  <testcase name="[3] &quot;single&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="reserveDeductionFloorsAssessableRevenueAtZero()" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[1] &quot;10000&quot;, &quot;10000&quot;, &quot;12615&quot;" classname="CalculateDuesTest" time="0.002"/>
+  <testcase name="[2] &quot;20000&quot;, &quot;20000&quot;, &quot;11962.5&quot;" classname="CalculateDuesTest" time="0.002"/>
+  <testcase name="[1] &quot;0&quot;, &quot;0&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[2] &quot;54999&quot;, &quot;8249.85&quot;" classname="CalculateDuesTest" time="0.0"/>
+  <testcase name="[3] &quot;55000&quot;, &quot;10450&quot;" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="[4] &quot;55001&quot;, &quot;10450.19&quot;" classname="CalculateDuesTest" time="0.002"/>
+  <testcase name="childcareEligibilityUsesOriginalRevenue()" classname="CalculateDuesTest" time="0.001"/>
+  <testcase name="subsequentDeductionsAreSubtractedAfterTheSpecifiedZeroFloor()" classname="CalculateDuesTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

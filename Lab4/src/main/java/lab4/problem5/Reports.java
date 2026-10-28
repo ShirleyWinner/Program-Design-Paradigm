@@ -16,18 +16,30 @@ public final class Reports {
 
   /** The menu's item names, as one line: "Espresso, Latte, ...". */
   public static String menuLine(List<MenuItem> menu) {
-    throw new UnsupportedOperationException("TODO: Problem 5");
+    return menu.stream().map(MenuItem::name).collect(Collectors.joining(", "));
   }
 
   /** How many orders each customer placed, customers A to Z. Hint: TreeMap::new. */
   public static Map<String, Long> ordersPerCustomer(List<Order> orders) {
-    throw new UnsupportedOperationException("TODO: Problem 5");
+    return orders.stream()
+            .collect(Collectors.groupingBy(
+                    Order::customer,
+                    TreeMap::new,
+                    Collectors.counting()
+            ));
   }
 
   /** The customers of big orders (true) and of the other orders (false), in order. */
   public static Map<Boolean, List<String>> bigOrderCustomers(List<Order> orders,
                                                              int thresholdCents) {
-    throw new UnsupportedOperationException("TODO: Problem 5");
+    return orders.stream()
+            .collect(Collectors.partitioningBy(
+                    order -> order.totalCents() >= thresholdCents,
+                    Collectors.mapping(
+                            Order::customer,
+                            Collectors.toList()
+                    )
+            ));
   }
 
   /** If you have time: every item name that appears in any order, A to Z. Use flatMap. */

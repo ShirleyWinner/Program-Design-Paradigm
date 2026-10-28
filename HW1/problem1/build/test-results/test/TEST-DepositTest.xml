@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="DepositTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-09-30T00:44:09.792Z" hostname="Roxannes-macbook.local" time="0.176">
+  <properties/>
+  <testcase name="testMaximumDeposit()" classname="DepositTest" time="0.099"/>
+  <testcase name="testMinimumDeposit()" classname="DepositTest" time="0.013"/>
+  <testcase name="testAboveMaximum()" classname="DepositTest" time="0.017"/>
+  <testcase name="testBelowMinimum()" classname="DepositTest" time="0.002"/>
+  <testcase name="testValidDeposit()" classname="DepositTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

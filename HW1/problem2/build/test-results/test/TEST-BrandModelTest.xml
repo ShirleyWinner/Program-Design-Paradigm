@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="BrandModelTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-09-30T00:44:21.603Z" hostname="Roxannes-macbook.local" time="0.094">
+  <properties/>
+  <testcase name="testBrandModelConstructorAndGetters()" classname="BrandModelTest" time="0.07"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
